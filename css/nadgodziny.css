@@ -1,0 +1,7 @@
+.accordion-button {
+    font-size: 1.1rem !important;
+}
+.tableOkres td, .tableOkres th{
+    padding: 2px;
+    text-align: center;
+}

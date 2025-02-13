@@ -1,0 +1,812 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;500;600;700;800;900&display=swap');
+
+
+*, p, h1, h2 {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    color: #495057;   
+    scroll-behavior: smooth; 
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+}
+
+
+h1 {     
+    font-size: 3rem;
+}
+
+h3 {
+    color:red  ;
+    font-size: 1.3rem;
+    padding: 0;
+    margin: 0;
+}
+
+h4 {
+    font-size: 1.2rem;
+}
+
+
+
+
+
+
+.small { font-size: 0.8rem; }
+.bold { font-weight: bold !important}
+
+.text-red{ color: #ff4a4a !important; }
+.text-gray { color:#7b7b7c !important}
+.text-green{ color:rgb(36, 211, 36) !important }
+.text-blue { color:rgb(69, 149, 241) !important }
+.text-left { text-align: left !important;}
+.text-right { text-align: right !important;}
+
+
+.bg-none {background: transparent !important;}
+.bg-1 {background:#d9eaf7 !important; color:#222}
+.bg-2 {background:#6e899e !important; color:#fff}
+.bg-3 {background:#ffa6a6 !important; color:#222}
+.bg-4 {background:#ec3f79 !important; color:#fff}
+.bg-5 {background:#464d52 !important; }
+.bg-lightgray1 {background-color: #f6f6f6;}
+.bg-lightgray2 {background-color: #eef1f4;}
+.bg-lightgray { background-color: #bbbbbccc;}
+.bg-gray { background:#2b3339 !important; color:#fff}
+.bg-trans-color { background: transparent !important;}
+
+
+
+input { padding: 2px; text-align: center; }
+select { padding: 4px; }
+
+h1.title {
+    text-shadow: 1px 1px 7px #7a7979;
+    color: #111;    
+}
+
+h1.title span {
+    color: red;    
+}
+
+
+#bodyStart {
+    background-image: url(../images/bg-4.jpg);
+    background-repeat: no-repeat;    
+    background-size: cover;
+    background-position: center center;
+    width: 100%;
+    height: 100%;
+    opacity: 1;
+    visibility: inherit;
+    z-index: 20;
+}
+
+.hide, .hidden {
+    display: none;
+}
+
+
+.modal-content {
+    width: 50%;
+}
+
+/* ------------------------------------------------------------------------------------------  */
+/* SCROLL TO TOP  */
+/* ------------------------------------------------------------------------------------------  */
+  
+.scroll-to-top {
+    display: inline-block;
+    width: 45px;
+    height: 45px;
+    background: #ffaa17;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 99;
+    text-align: center;
+    -webkit-transition: all .4s ease;
+    transition: all .4s ease;
+    display: none;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+   -o-border-radius: 50%;
+  }
+  
+  .scroll-to-top:after, .scroll-to-top:before {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+    background-color: #ffaa17;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    -webkit-animation-delay: .9s;
+    animation-delay: .9s;
+    content: "";
+    position: absolute;
+    -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
+    box-shadow: 0 0 0 0 rgba(255, 255, 255, 0.6);
+    -webkit-animation: ripple 3s infinite;
+    animation: ripple 3s infinite;
+    -webkit-transition: all .4s ease;
+    transition: all .4s ease;
+  }
+  
+  .scroll-to-top:after {
+    -webkit-animation-delay: .6s;
+    animation-delay: .6s;
+  }
+  
+  .scroll-to-top i {
+    font-size: 18px;
+    line-height: 45px;
+    color: #fff;
+    position: relative;
+    z-index: 10;
+    -webkit-transition: all .4s ease;
+    transition: all .4s ease;
+  }
+  
+  .scroll-to-top:hover {
+    background: #fff;
+  }
+  
+  .scroll-to-top:hover i {
+    color: #222429;
+  }
+  
+  .scroll-to-top:hover:before, .scroll-to-top:hover:after {
+    background-color: #fff;
+  }
+  
+  @-webkit-keyframes ripple {
+    70% {
+      -webkit-box-shadow: 0 0 0 40px rgba(255, 255, 255, 0);
+      box-shadow: 0 0 0 40px rgba(255, 255, 255, 0);
+    }
+    100% {
+      -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+      box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+    }
+    0% {
+        -webkit-box-shadow: 0 0 0 0 #ffffff00;
+        box-shadow: 0 0 0 0 #ffffff00;
+      }
+  }
+  
+  @keyframes ripple {
+    70% {
+        -webkit-box-shadow: 0 0 0 40px rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 40px rgba(255, 255, 255, 0);
+      }
+      100% {
+        -webkit-box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+        box-shadow: 0 0 0 0 rgba(255, 255, 255, 0);
+      }
+  }
+
+
+
+/* ------------------------------------------------------------------------------------------  */
+/* HEADER  */
+/* ------------------------------------------------------------------------------------------  */
+
+#login label {
+    font-weight: bold;
+}
+
+
+
+header .buttons {
+    text-align: right;
+}
+
+.py-sm-5 { padding: 50px 0;}
+
+header img.logo{
+    width: 120px;
+    height: 100px; 
+}
+#homeNauczyciel .buttons .btn-primary {display: none;}
+/* ------------------------------------------------------------------------------------------  */
+/* godzinyHeader  */
+/* ------------------------------------------------------------------------------------------  */
+
+#godzinyHeader {   
+    background-color: rgb(245 245 245 / 10%);
+    border: solid rgba(0, 0, 0, .15);
+    border-width: 1px 0;
+    
+}
+
+#godzinyHeader h4 {
+    background: #6e899e !important;
+    color: #fff;
+    font-weight: 300;
+    text-align: center;
+    padding: 5px;
+    letter-spacing: 0.1em;
+}
+
+/* ---------------------------------------------------------------------- */
+/* Grid style 2 */
+
+.grid-container2 {
+    display: grid;
+    grid-template-columns: auto auto ;    
+    padding: 10px;
+  }
+
+.grid-item, .grid-item1, .grid-item2, .grid-item3   {
+    padding: 2px 5px;
+    text-align: center;     
+}  
+.grid-item1 {
+    background-color: #cfe2ff;
+    border: 1px solid rgba(0, 0, 0, 0.8);        
+  }
+
+.grid-item2 {
+    background-color:#e9ecef;
+    border: 1px solid rgba(0, 0, 0, 0.8);
+}
+.grid-item2 input {
+    background-color: transparent !important;
+    font-weight: 900;
+}
+
+.grid-item3 {    
+    border: 1px solid rgba(0, 0, 0, 0.8);
+       
+}
+
+#godzinyHeader .form-control {   
+    line-height: 1.2;
+    padding: 0 2px;
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    background-clip: padding-box;
+    border: var(--bs-border-width) solid var(--bs-border-color);
+    border-radius: var(--bs-border-radius);
+    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+/* ------------------------------------------------------------------------------------------  */
+/* nadgodziny  */
+/* ------------------------------------------------------------------------------------------  */
+tr > th, tr > td {    
+    border-right: 1px solid #49505766;
+}
+
+tr > th:last-child, tr > td:last-child {
+    border-left: 2px solid #49505766;    
+    border-right: unset;
+}
+
+tbody {
+    border-top: calc(var(--bs-border-width) * 2) solid currentcolor;
+    border-bottom: calc(var(--bs-border-width) * 2) solid currentcolor;
+}
+
+th.wolne, td.wolne {
+    --bs-bg-opacity: 1;
+    background:#2b3339 !important; color:#fff;    
+}
+
+.norma {
+    width:115px;
+}
+
+th.label { 
+    text-align: right !important;
+    padding-right: 10px !important;
+    font-size: 0.8rem !important;
+    border-right: 2px solid #00000052 !important;
+}
+
+#nadgodzinyTabela {
+    /* display: none; */
+}
+
+#nadgodzinyTabela input {
+    text-align: center;
+}
+
+#nadgodzinyTabela input.wolne {
+    background-color: #7a7979;
+}
+
+#nadgodzinyTabela input.suma {
+    background:#6e899e !important;
+    color: #222;
+    border: 0;
+    font-weight: bold;
+}
+
+#nadgodzinyTabela .sumaNorma, #nadgodzinyTabela .bg-suma {
+    background:#6e899e !important;
+    color: #222;    
+    font-weight: bold;
+}
+
+th.bl {
+    border-left: 2px solid #00000052 !important;
+}
+/* ----------------------------------------------------------------------------
+      LOGIN
+---------------------------------------------------------------------------- */
+#login {
+    display: -ms-flexbox;
+    display: -webkit-box;
+    display: flex;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+}
+
+.form-signin {
+    width: 100%;
+    max-width: 420px;
+    padding: 15px;
+    margin: 0 auto;
+    
+}
+
+#login select {
+    display: block;
+    width: 100%;
+    color:#495057;
+    font-size: 0.9rem;
+}
+
+#login .btn-block {
+    display: block;
+    width: 100%;
+}
+
+
+#login .logo {
+    width: 200px;
+    /* position: absolute;
+    top: -6px; */
+}
+
+
+.form-signin label {
+    display: block;
+}
+
+.err {
+    color: red;
+    visibility: hidden;
+}
+
+#profil {
+    background-color: #e5e5e5 !important;
+}
+
+/* ----------------------------------------------------------------------------
+      ADMIN SITE 
+---------------------------------------------------------------------------- */
+#adminSite #list {
+    width: 500px;    
+    margin-right: auto;
+}
+
+#profil label {
+    display: block;
+}
+#profil input  {
+    text-align: center;
+}
+
+#profil #ileTygodni {
+    max-width: 55px;
+}
+#submitRok {
+    max-height: 40px;
+}
+
+#tableOkres td, #tableOkres th {
+    text-align: center;
+}
+/* ----------------------------------------------------------------------------
+      SITE 
+---------------------------------------------------------------------------- */
+.logo img {
+    height: 80px;        
+}
+
+.top1 h1 {
+    font-family: 'Archivo Narrow', sans-serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 0;
+    letter-spacing: 1px;    
+    text-shadow: 0 1px 0.2rem #00000059;
+}
+
+.top1 h2 {
+    font-family: 'Archivo Narrow', sans-serif;
+    letter-spacing: 2px;
+    margin-bottom: 0;
+}
+
+.top2 {
+    height: 40px;
+    font-weight: 300;
+}
+.header-left {
+    padding-left: 20px;
+}
+
+.kl {
+    width: 50px !important;
+    max-width: 50px !important;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.red {
+    color: red;
+}
+
+.yellow {
+    color:#f1cf9c;
+}
+
+.header-klasa {   
+    color: #212529;
+}
+
+.accordion-button:not(.collapsed) {
+    color: #fff;
+    font-weight: 600;
+    background-color: #212529;
+    box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+}
+
+.accordion-button.collapsed {
+    color: #fff;
+    font-weight: 600;
+    background-color: #4a4a4a;
+    box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+}
+
+.form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+}
+.form-check-input[type=checkbox] {
+    border-radius: .05em;
+}
+
+
+/* ---------------------------------------------------------  */
+/* ANALIZA  */
+/* ---------------------------------------------------------  */
+#listaUzytkownikow {
+    padding-left: 0;    
+    list-style-type: none;
+}
+#listaUzytkownikow li {
+    padding-bottom: 5px;
+    font-size: 0.9rem !important;
+}
+#listaUzytkownikow li:hover {
+    cursor: pointer;
+    color: #ffc851; 
+}
+
+.card .uzasadnienie {
+    font-size: 0.8rem !important;
+}
+.card .belfer {
+    padding: 5px;
+    color: cornflowerblue;
+    font-weight: 500;
+}
+
+.card h5 {
+    font-size: 1rem;
+}
+.card h6 {
+    font-size: 1rem;
+    background-color: #fff;
+    color: brown;
+    padding: 5px;
+
+}
+.card p {
+    font-size: 0.9rem;
+}
+
+/* ---------------------------------------------------------  */
+/* WYDRUK  */
+/* ---------------------------------------------------------  */
+
+table td li {
+    font-size: 0.8rem;
+}
+
+#wydruk img {
+    width: 21px;
+    height: auto;
+    color: black;
+}
+#wydruk img:hover {
+    cursor: pointer;    
+}
+
+
+
+
+/* NAdgodziny - user  */
+/* ---------------------------------------------------------  */
+#saveGodzny .form-label {
+    text-align: center;
+    width: 100% !important;
+    line-height: 1rem;
+}
+
+#saveGodzny input {
+    text-align: center;    
+}
+
+
+/* ken-Admin */
+.side-menu {
+    background: aquamarine;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.nav-link {
+    text-transform:uppercase;
+    color: #ddd;
+}
+.nav-link.active {
+    color: #65a3ff;
+}
+
+
+.user_godziny label { height: 50px; font-size: 0.9rem }
+.user_godziny label {
+    height: 50px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: flex-end;            
+    justify-content: center;            
+}
+.user_godziny input {text-align: center;}
+.table_nadgodziny tbody tr > th, .table_nadgodziny tfoot tr > th {
+    text-align: right;
+    font-size:0.8rem;
+}
+.table_nadgodziny tbody tr > td {
+    text-align:center;
+}
+.tabelaTydzen th, 
+.tabelaTydzen td { 
+    padding:5px 2px; 
+    text-align:center;
+    font-size: 0.9rem;
+}
+
+
+/* ---------------------------------------------------------  */
+/* nadgodziny analiza */
+
+#contentContainer {
+    padding: 0;
+}
+
+.grid-container4 i.far {
+    color: #3af !important;
+    transition: all 0.3s ease;
+    font-size: 1.4rem;
+}
+
+.grid-container4 i.far:hover {
+    color: rgb(245, 78, 78) !important;
+}
+
+.teacher {
+    text-align: left;
+}
+.pusty {
+    background-color: #b9c3cd;
+    color: #827f7f;
+}
+
+.pusty.brak {    
+    background: #dc3545!important;
+    color: #fff;
+}
+
+/* tabela szerokości  */
+
+.w-1px { width: 11%; }
+.w-3px { width: 120px; }
+.w-3apx { width: 100px; }
+
+#accordionGodzinyAnaliza .accordion-button.collapsed {    
+    font-weight:normal;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem !important;
+    transition: all 0.2s ease;
+}
+
+#accordionGodzinyAnaliza .accordion-button:not(.collapsed) {
+    font-weight:normal;
+    font-family: 'Roboto', sans-serif;    
+    color: red !important;
+    padding: 10px 2px !important;
+}
+
+#accordionGodzinyAnaliza .accordion-button:not(.collapsed) .grid-item{
+    color: red !important;
+}
+
+#accordionGodzinyAnaliza .accordion-button {
+    padding: 0 !important;
+}
+
+#accordionGodzinyAnaliza .accordion-body {
+    padding: 10px 0 !important;
+}
+
+table.tableV1 {
+    width: calc( 100% - 20px);
+}
+
+#accordionGodzinyAnaliza input {
+    max-width: 80%;
+}
+
+#accordionGodzinyAnaliza .accordion-button .table.tableV1 {
+    margin: 0;    
+}
+
+#accordionGodzinyAnaliza .accordion-button .table td {
+    text-align: center;
+}
+
+
+
+/* grid tabela w nadgodziny - accordion  */
+.grid-container3, .grid-container4  {
+    display: grid;    
+    grid-template-columns: 30px 270px 95px 95px 95px 95px 120px 120px 120px 120px auto 50px;      
+    padding: 2px;
+  }
+
+  .grid-container3 {    
+    width: calc( 100% - 20px);        
+  }
+
+.grid-container3 .grid-item {
+    /* padding: 5px 2px; */
+    /* text-align: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+}  
+
+.grid-container3 .grid-item {
+    background-color: #cfe2ff;
+    border: 1px solid rgba(0, 0, 0, 0.8);    
+    font-weight: bold;
+  }
+
+.grid-container4 {
+    width: 100%;
+  }
+
+.grid-container4 .grid-item {
+    padding: 5px 2px;
+    text-align: center;     
+}  
+
+.grid-container4 .grid-item {
+    background-color: transparent;
+    color: #fff;
+    border-right: 1px solid rgba(0, 0, 0, 0.8);        
+  }
+.grid-container4 .grid-item1 {
+    background-color: transparent;
+    color: #fff;    
+  }
+
+/* tooltip usera nadgodziny  */
+  .tooltip1 {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+  }
+
+  .tooltip1 .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .tooltip1:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+
+
+  @media screen and (max-width: 678px) {
+    .logo img { height: 65px}
+    .top1 .fs-4 { font-size: 1rem !important;    }
+    .top1 .fs-5 { font-size: 1rem !important;    }
+    #TableTeacherBody { padding: 2px !important; font-size: 0.8rem !important;    }
+    .copy { font-size: 0.8rem !important; text-align: center;}    
+    header img.logo{
+		width: 100px;
+		height: 65px; 
+	}
+    .header-left {
+        padding-left: 5px;
+    }
+    header .buttons {
+        text-align: center;
+        margin: 10px 0;  
+    }
+    header .buttons a button { width: 120px;}
+    .passwords { text-align: center; }
+    .passwords form > div {margin-bottom: 10px;  }
+    .py-sm-5 { padding: 0 0;}
+    .modal-content {width: 100%; }
+
+  }
+
+
+  /* Panel dyrektora  */
+  .sider {
+    background-color: #4d5b66a6;
+    color: #000;
+    padding: 20px;
+}
