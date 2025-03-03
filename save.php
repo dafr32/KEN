@@ -547,45 +547,102 @@
     if( isset($_POST['DodajEgzamin'])){
         $p = $_POST['przedmiot'];
         $d = $_POST['data'];
-        $g = $_POST['godz'];
+        $g = $_POST['godz'];        
+        $rok = $_POST['rok'];        
+
         include "connect.php";   
         // sprawdzenie czy już przedmiot jest 
-        $sql = "SELECT id FROM egzaminy__Terminy WHERE przedmiot = '$p'";
-        $result = $conn->query($sql);
-        if ($result->num_rows == 0) {
-            $sql = "INSERT INTO `egzaminy__Terminy`(`id`, `przedmiot`, `data`, `godz`) VALUES (null,?,?,?)";
-            $stmt = $conn->prepare($sql);
-            if($stmt === false) {
-                echo "Prepared statement creation failed: " . $conn->error;
-                exit;
-            }
-            $stmt->bind_param('ssi', $p, $d, $g);
-            $result = $stmt->execute();     
-        }   
-        header("Location: ken_admin.php");
-    }
-
-
-    if( isset($_POST['addKomisjaEgzamin'])) {
-        include "connect.php";   
-        $p = $_POST['EgzaminPrzedmiot'];
-
-        $sql = "SELECT * FROM egzaminy__EgzaminyUstalone WHERE przedmiot = '$p' AND sala = null";
+        $sql = "SELECT id FROM egzaminy__Terminy WHERE przedmiot = '$p' AND rok = $rok";               
         echo $sql;
         $result = $conn->query($sql);
-        if ($result->num_rows == 0) {
-            $sql = "INSERT INTO `egzaminy__EgzaminyUstalone`(`id`, `przedmiot`, `sala`, `osoby`) 
-                    VALUES (null, ?, null, null)";
+        if ($result->num_rows == 0) {            
+            $sql = "INSERT INTO `egzaminy__Terminy`(`id`, `przedmiot`, `data`, `godz`, `rok`) VALUES (null,?,?,?,?)";
             $stmt = $conn->prepare($sql);
             if($stmt === false) {
                 echo "Prepared statement creation failed: " . $conn->error;
                 exit;
             }
-            $stmt->bind_param('s', $p);
-            $result = $stmt->execute();  
-        }
-        header("Location: ken_admin.php");
+            $stmt->bind_param('ssii', $p, $d, $g, $rok);
+            $result = $stmt->execute(); 
+             
+        }   
+        // header("Location: ken_admin.php");
     }
+
+
+    // if( isset($_POST['addKomisjaEgzamin'])) {
+    //     include "connect.php";   
+    //     $p = $_POST['EgzaminPrzedmiot'];
+    //     $rok = $_POST["rok"];
+
+    //     $sql = "SELECT * FROM egzaminy__EgzaminyUstalone WHERE przedmiot = '$p' AND sala = null";
+    //     echo $sql;
+    //     $result = $conn->query($sql);
+    //     if ($result->num_rows == 0) {
+    //         $sql = "INSERT INTO `egzaminy__EgzaminyUstalone`(`id`, `przedmiot`, `sala`, `osoby`, `rok`) 
+    //                 VALUES (null, ?, null, null, ?)";
+    //         $stmt = $conn->prepare($sql);
+    //         if($stmt === false) {
+    //             echo "Prepared statement creation failed: " . $conn->error;
+    //             exit;
+    //         }
+    //         $stmt->bind_param('s', $p);
+    //         $result = $stmt->execute();  
+    //     }
+    //     header("Location: ken_admin.php");
+    // }
+
+
+
+    if (isset($_POST['addKomisjaEgzamin'])) {
+        include "connect.php";   
+        $p = $_POST['EgzaminPrzedmiot'];
+        $rok = $_POST["rok"];
+    
+        // Poprawione zapytanie SQL - użycie IS NULL zamiast = null
+        $sql = "SELECT * FROM egzaminy__EgzaminyUstalone WHERE przedmiot = ? AND sala IS NULL";
+        $stmt = $conn->prepare($sql);
+        if ($stmt === false) {
+            echo "Prepared statement creation failed: " . $conn->error;
+            exit;
+        }
+    
+        // Bindowanie parametrów (string 's' dla przedmiotu)
+        $stmt->bind_param('s', $p);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        // Jeśli nie ma wyników, wstaw nowy egzamin
+        if ($result->num_rows == 0) {
+            $sql = "INSERT INTO `egzaminy__EgzaminyUstalone`(`przedmiot`, `sala`, `osoby`, `rok`) 
+                    VALUES (?, NULL, NULL, ?)";
+            $stmt = $conn->prepare($sql);
+            if ($stmt === false) {
+                echo "Prepared statement creation failed: " . $conn->error;
+                exit;
+            }
+    
+            // Bindowanie parametrów (string 's' dla przedmiotu, int 'i' dla roku)
+            $stmt->bind_param('si', $p, $rok);
+            if (!$stmt->execute()) {
+                echo "Query execution failed: " . $stmt->error;
+                exit;
+            }
+        }
+    
+        // Zamknięcie połączenia i przekierowanie
+        $stmt->close();
+        $conn->close();
+        header("Location: ken_admin.php");
+        exit();
+    }
+
+    
+
+
+
+
+
 
     if (isset($_POST['submitNewPasswordAdmin'])) {
         include "connect.php";   

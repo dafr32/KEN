@@ -9,9 +9,9 @@
 
     $_SESSION['content-admin'] = "admin_Egzaminy.php";
     $_SESSION['egzaminy-content'] = "admin_Egzaminy_Terminy.php";
-
+    $rok = $_SESSION['egzaminy-rok'];
     if(isset($_GET['del_id'])){
-        $sql = "DELETE FROM `egzaminy__Terminy` WHERE id=?";
+        $sql = "DELETE FROM `egzaminy__Terminy` WHERE id=? AND rok=$rok";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $_GET["del_id"]);
         $stmt->execute();
@@ -30,10 +30,10 @@
     #egzaminyTable thead th { background: #0d6efd; color: #fff}
 </style>
 
-<div class="container mt-2">    
+<div class="container p-3">    
     <div class="row">
         <div class="col-sm-12 col-xxl-9 pe-2">  
-            <h2 class="mb-2">Terminy egzaminów</h2> 
+            <h2 class="mb-3">Terminy egzaminów - <?php echo $_SESSION['egzaminy-rok'] ?></h2> 
             <form action="save.php" method="POST">                     
                 <div style="max-height: calc(100vh - 300px); overflow:auto">                
                     <table id="egzaminyTable" class="table table-striped" >
@@ -47,8 +47,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <?php
-                            $sql = "SELECT * FROM egzaminy__Terminy ORDER BY data, godz ";
+                            <?php                            
+                            $sql = "SELECT * FROM egzaminy__Terminy WHERE Year(data) = ".  $_SESSION['egzaminy-rok'] ." ORDER BY data, godz ";
                             $result = $conn->query($sql);
                             
                             if ($result->num_rows > 0) {
@@ -106,7 +106,9 @@
                             <option value="2" >14:00</option>
                         </select>
                     </div>
+                    
                 </div>
+                <input type="hidden" name="rok" value="<?php echo ($_SESSION['egzaminy-rok'] ?? '') ?>">
                 <div class="text-end">
                     <button type="submit" name="DodajEgzamin" class="btn btn-primary">Dodaj</button>
                 </div>

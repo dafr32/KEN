@@ -7,10 +7,11 @@
     }
     require "connect.php";         
 
-    $rokSzk = $_SESSION['rokSzk'];
-    $semestr = $_SESSION['semestr'];
-    $klasa = $_SESSION['klasa'];
-    $okres = $_SESSION['okres'];
+    $rokSzk = isset($_SESSION['rokSzk']) ? $_SESSION['rokSzk'] : null;
+    $semestr = isset($_SESSION['semestr']) ? $_SESSION['semestr'] : null;
+    $klasa = isset($_SESSION['klasa']) ? $_SESSION['klasa'] : null;
+    $okres = isset($_SESSION['okres']) ? $_SESSION['okres'] : null;
+    
     
     //formularz wyboru ucznia z opinią w pliku efekt_Uczniowie 
     if(isset($_POST['zapiszWybranych'])) {
@@ -174,4 +175,73 @@
         }
     }
     
+
+    
+    // IMPORT Egzaminy the CSV file    
+    if (isset($_POST['import_Users_Egzaminy'])) {
+        
+        // Sprawdzenie, czy plik CSV został przesłany
+        echo "rok";
+        $rok = $_POST["rok"];
+        if($rok != '' ) {            
+            if (!isset($_FILES['csvFile']['tmp_name']) || empty($_FILES['csvFile']['tmp_name'])) {
+                die("Błąd: Nie wybrano pliku CSV.");
+            }
+
+            // Połączenie z bazą danych tylko raz
+            include "connect.php";
+           
+            // $handle = fopen($csvFile, "r");
+            $csvFile = $_FILES['csvFile']['tmp_name'];
+            if (($handle = fopen($csvFile, "r")) !== false) {                
+
+                // Przygotowanie zapytania SQL przed pętlą
+                $sql = "INSERT INTO `egzaminy__Uczniowie` 
+                        (`Kod zdającego`, `Nazwisko`, `Imiona`, `Rodzaj deklaracji`, `Typ arkusza`, `Egzamin`, `Sposoby dostosowania`, `Nr sali`, `rok`) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                
+                $stmt = $conn->prepare($sql);
+                if ($stmt === false) {
+                    die("Błąd przygotowania zapytania: " . $conn->error);
+                }
+
+                // Przetwarzanie pliku CSV
+                $headerSkipped = false;
+                while (($data = fgetcsv($handle, 1000, ";")) !== false) {  
+                    if (!$headerSkipped) {
+                        $headerSkipped = true;
+                        continue; // Skip the header row
+                    }               
+                    if (count($data) < 8) {
+                        echo "Pominięto niekompletny wiersz w CSV.<br>";
+                        continue;
+                    }
+                    // Przypisanie wartości
+                    list($kod, $nazwisko, $imiona, $pesel, $rodzaj, $typ, $egzamin, $dostosowania, $sala) = $data;
+                                        
+                    $kod = str_replace('"', '', $kod);                    
+                    $stmt->bind_param("ssssssssi", $kod, $nazwisko, $imiona, $rodzaj, $typ, $egzamin, $dostosowania, $sala, $rok);
+
+                    // Wykonanie zapytania
+                    if (!$stmt->execute()) {
+                        echo "Błąd przy dodawaniu rekordu: " . $stmt->error . "<br>";
+                    }
+                }
+
+                // Zamknięcie pliku i zasobów
+                fclose($handle);
+                $stmt->close();
+            } else {
+                echo "Błąd otwierania pliku CSV.";
+            }
+
+            // Zamknięcie połączenia z bazą
+            $conn->close();
+        }
+        // Przekierowanie po zakończeniu importu
+        header('Location: ken_admin.php');
+        exit();
+    }
+
+
 ?>

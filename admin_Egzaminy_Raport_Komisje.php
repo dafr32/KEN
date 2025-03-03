@@ -16,10 +16,10 @@
     require "connect.php"; 
 
 ?>
-<h2 class="text-center my-2">Raport - Wykaz komisji egzaminacyjnych</h2>
+<h2 class="text-center my-2">Raport - Wykaz komisji egzaminacyjnych <?php echo $_SESSION['egzaminy-rok'] ?></h2>
 <div class="mt-2" style="max-width:800px; margin-left:auto; margin-right:auto">
     <?php
-    $sqlLista = "SELECT * FROM `egzaminy__EgzaminyUstalone`";
+    $sqlLista = "SELECT * FROM `egzaminy__EgzaminyUstalone` WHERE rok=".$_SESSION['egzaminy-rok'];
     $resultLista = $conn->query($sqlLista);        
     if ($resultLista->num_rows > 0) {
         echo '<div class="mx-auto" >';
@@ -40,7 +40,7 @@
                                         FROM `egzaminy__Komisje` AS ek
                                         INNER JOIN `Nauczyciele` AS n ON ek.`idNauczyciela` = n.`ID`
                                         INNER JOIN `egzaminy__Role` AS er ON ek.`rola` = er.`id`
-                                        WHERE ek.`idEgzaminu` = $idEgzamin ORDER BY er.id;";                                
+                                        WHERE ek.`idEgzaminu` = $idEgzamin AND ek.rok = ". $_SESSION['egzaminy-rok']." ORDER BY er.id;";                                
                                 // echo $sqlK;
                                 $resultK = $conn->query($sqlK);        
                                 if ($resultK->num_rows > 0) {

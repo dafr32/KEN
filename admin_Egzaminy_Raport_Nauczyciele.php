@@ -9,7 +9,8 @@
     require "connect.php"; 
 
     // Lista nauczycieli 
-    $sql = "SELECT `ID`,`Nazwisko`,`Imie` FROM `Nauczyciele` ORDER BY `Nazwisko`, `Imie`;";
+    $sql = "SELECT Nauczyciele.`ID`, Nauczyciele.`Nazwisko`, Nauczyciele.`Imie` FROM `Nauczyciele` INNER JOIN egzaminy__Komisje ON Nauczyciele.ID = egzaminy__Komisje.idNauczyciela WHERE egzaminy__Komisje.rok = ". $_SESSION['egzaminy-rok']." ORDER BY `Nazwisko`, `Imie`;";
+    // $sql = "SELECT `ID`,`Nazwisko`,`Imie` FROM `Nauczyciele` ORDER BY `Nazwisko`, `Imie`;";
     $result = $conn->query($sql);
     $tab_nauczyciele = array(); 
     if ($result->num_rows > 0) {
@@ -66,6 +67,7 @@
             $proc = 65 / $ileRol;
             $tabRole = array();
             ?>
+            <h2 class="text-left my-1">Przydziały <?php echo $_SESSION['egzaminy-rok'] ?></h2>
             <div id="TableNauczHeader" class="border-bottom mt-3" style="width: calc(100% - 15px); display: grid; grid-template-columns: 5% 30% repeat(<?php echo "$ileRol, $proc"; ?>%);">
 
                 <div class="pt-5">lp</div>
@@ -80,7 +82,7 @@
             echo "</div>";
         } ?>
         
-        <div id="TableTeacherBody" style="max-height: calc(100vh - 355px); overflow: auto;">      
+        <div id="TableTeacherBody" style="max-height: calc(100vh - 400px); overflow: auto;">      
             <?php 
             $i = 1;
             foreach ($tab_nauczyciele as $nauczyciel): 
@@ -89,7 +91,7 @@
                 endforeach;
                 $razem = 0;                
                 $sql13 = "SELECT Nauczyciele.nazwisko, egzaminy__Role.rola as nameRola, egzaminy__Komisje.rola, COUNT(*) AS liczba_wystapien FROM egzaminy__Komisje INNER JOIN Nauczyciele ON egzaminy__Komisje.idNauczyciela = Nauczyciele.ID INNER JOIN egzaminy__Role ON egzaminy__Komisje.rola = egzaminy__Role.id 
-                        WHERE idNauczyciela = ".$nauczyciel['ID']." GROUP BY egzaminy__Komisje.rola;";
+                        WHERE idNauczyciela = ".$nauczyciel['ID']." and egzaminy__Komisje.rok = ". $_SESSION['egzaminy-rok'] ." GROUP BY egzaminy__Komisje.rola;";
                 $res13 = $conn->query($sql13);        
                 if ($res13->num_rows > 0) {                    
                     

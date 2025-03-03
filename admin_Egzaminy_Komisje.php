@@ -56,22 +56,23 @@
     
     
     $idEgzamin = null;
+    $rok = $_SESSION['egzaminy-rok'];
 
     // dodaj członka komisji 
     if (isset($_GET['addTeacher'])) {
         $idE = $_GET['egzamin'];
         $idTeacher = $_GET['addTeacher'];
         $rola = $_GET['rola'];
-        $sql ="SELECT * FROM `egzaminy__Komisje` WHERE `idNauczyciela`= $idTeacher AND `idEgzaminu`=$idE";        
+        $sql ="SELECT * FROM `egzaminy__Komisje` WHERE `idNauczyciela`= $idTeacher AND `rok` = $rok AND `idEgzaminu`=$idE";        
         $result = $conn->query($sql);        
         if ($result->num_rows == 0) {
-            $sql = "INSERT INTO `egzaminy__Komisje`(`id`, `idEgzaminu`, `idNauczyciela`, `rola`) VALUES (null,?,?,?)";
+            $sql = "INSERT INTO `egzaminy__Komisje`(`id`, `idEgzaminu`, `idNauczyciela`, `rola`, `rok`) VALUES (null,?,?,?,?)";
             $stmt = $conn->prepare($sql);
             if($stmt === false) {
                 echo "Prepared statement creation failed: " . $conn->error;
                 exit;
             }
-            $stmt->bind_param('iii',$idE ,$idTeacher , $rola);
+            $stmt->bind_param('iiii',$idE ,$idTeacher , $rola, $rok);
             $result = $stmt->execute();   
         }
     }
@@ -79,7 +80,7 @@
     if (isset($_GET['delTeacher'])) {
         $idE = $_GET['delE'];
         $idN = $_GET['delTeacher'];
-        $sql = "DELETE FROM `egzaminy__Komisje` WHERE `idEgzaminu`= $idE AND `idNauczyciela`= $idN";
+        $sql = "DELETE FROM `egzaminy__Komisje` WHERE `idEgzaminu`= $idE AND rok = $rok AND `idNauczyciela`= $idN";
         if ($conn->query($sql) === TRUE) {
             header("Location: admin_Egzaminy_Komisje.php?egzamin=$idE");  
         } else {
@@ -137,8 +138,8 @@
 
 <div class="container p-3">
     <div class=row>    
-        <div class="col-8">
-            <h2 class="mb-3">Komisje egzaminacyjne </h2>
+        <div class="col-sm-12 col-lg-8">
+            <h2 class="mb-3">Komisje egzaminacyjne <?php echo $_SESSION['egzaminy-rok'] ?></h2>
             <div class="table-responsive">
                 <div id="EgzaminyGrid" class="border-bottom" style="width: calc(100% - 15px); display: grid; grid-template-columns: 15% 10% 45% repeat(3, 10%);">                    
                     <div class="table-header">Data</div>
@@ -155,9 +156,10 @@
                             INNER JOIN egzaminy__EgzaminyUstalone ON egzaminy__Terminy.przedmiot = egzaminy__EgzaminyUstalone.przedmiot 
                             LEFT JOIN (
                                 SELECT idEgzaminu, COUNT(*) AS komisje_count 
-                                FROM egzaminy__Komisje 
+                                FROM egzaminy__Komisje                                 
                                 GROUP BY idEgzaminu
                             ) AS komisje ON egzaminy__EgzaminyUstalone.id = komisje.idEgzaminu 
+                            WHERE Year(egzaminy__Terminy.data) = ". $_SESSION['egzaminy-rok'] ." 
                             ORDER BY egzaminy__Terminy.data, egzaminy__Terminy.przedmiot, egzaminy__EgzaminyUstalone.osoby DESC, egzaminy__EgzaminyUstalone.sala";
                     // echo $sqlT;
                     $resultT = $conn->query($sqlT);
@@ -172,7 +174,7 @@
                                 if ($cl === "row1") $cl = "row2"; else $cl = "row1";
                             }
                                                             
-                                echo "<div class='table-row " . $cl . ($idEgzamin && $idEgzamin === $rowT['id'] ? " selected-row" : "") . "' id='E".$rowT['id']  ."' data-id='" . $rowT['id'] . "'
+                                echo "<div class='table-row " . $cl . ($idEgzamin && $idEgzamin === $rowT['id'] ? " selected-row" : "") . "' id='E".$rowT['id']  ."' data-id='" . $rowT['id'] . "' data-rok='". $_SESSION['egzaminy-rok'] ."' 
                                      style='display: grid; cursor: pointer; grid-template-columns: 15% 10% 45% repeat(3, 10%);'>";
                                     echo "<div class='table-cell th>";                                                                   
                                     echo "<div class='table-cell'>$data</div>";                                                                      
@@ -215,7 +217,7 @@
                                     FROM `egzaminy__Komisje` AS ek
                                     INNER JOIN `Nauczyciele` AS n ON ek.`idNauczyciela` = n.`ID`
                                     INNER JOIN `egzaminy__Role` AS er ON ek.`rola` = er.`id`
-                                    WHERE ek.`idEgzaminu` = $idEgzamin ORDER BY er.id;";                                
+                                    WHERE ek.`idEgzaminu` = $idEgzamin AND ek.rok = $rok ORDER BY er.id;";                                
                             // echo $sqlK;
                             $resultK = $conn->query($sqlK);        
                             if ($resultK->num_rows > 0) {
@@ -249,6 +251,7 @@
                                 echo "<option value='{$rowNE['przedmiot']}'>{$rowNE['przedmiot']}</option>";
                             }
                         echo "</select>";
+                        echo '<input type="hidden" name="rok" value="' . ($_SESSION['egzaminy-rok'] ?? '') . '">';
                     }
                     ?>
                     <button class="btn btn-primary mt-3" name="addKomisjaEgzamin" type="submit" >Dodaj komisję</button>
@@ -339,7 +342,7 @@
                                 endforeach;
                                 $razem = 0;                
                                 $sql13 = "SELECT Nauczyciele.nazwisko, egzaminy__Role.rola as nameRola, egzaminy__Komisje.rola, COUNT(*) AS liczba_wystapien FROM egzaminy__Komisje INNER JOIN Nauczyciele ON egzaminy__Komisje.idNauczyciela = Nauczyciele.ID INNER JOIN egzaminy__Role ON egzaminy__Komisje.rola = egzaminy__Role.id 
-                                        WHERE idNauczyciela = ".$nauczyciel['ID']." GROUP BY egzaminy__Komisje.rola;";
+                                        WHERE idNauczyciela = ".$nauczyciel['ID']." AND egzaminy__Komisje.rok = $rok GROUP BY egzaminy__Komisje.rola;";
                                 $res13 = $conn->query($sql13);        
                                 if ($res13->num_rows > 0) {                    
                                     
@@ -488,10 +491,11 @@
     var tableRowsEgzamin = document.querySelectorAll('#TableEgzamin .table-row');
     tableRowsEgzamin.forEach(function(row) {
         row.addEventListener('click', function() {            
-            var idE = row.getAttribute('data-id');         
+            var idE = row.getAttribute('data-id');   
+            var rok = row.getAttribute('data-rok');   
             console.log("id:"+idE);
             $.ajax({
-                url: `admin_Egzaminy_Komisje.php?egzamin=${idE}#E${idE}`,                
+                url: `admin_Egzaminy_Komisje.php?rok=${rok}&egzamin=${idE}#E${idE}`,                
                 type: "GET", // Typ żądania            
                 success: function(response) {
                     $("#egzaminy_content").html(response); 
@@ -558,7 +562,8 @@
     }    
 </script>
 <?php     
-    echo "<script> scrollToRow('E' + $idEgzamin); </script>";
+    if (isset($idEgzamin))
+        echo "<script> scrollToRow('E' + $idEgzamin); </script>";
 ?>
 
 

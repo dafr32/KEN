@@ -82,6 +82,11 @@
         header('Location: index.php');
     } 
 
+    if(isset($_GET["rok"])){
+      $_SESSION['egzaminy-rok'] = $_GET["rok"];
+      header("Location: /ken_admin.php");
+      exit();
+    }
     require "connect.php";
 
     $belfer = $_SESSION['belfer'];
@@ -251,19 +256,19 @@
 
     
     function printDiv() {
-    var printContents = document.getElementById('printDiv').innerHTML;
-    var originalContents = document.body.innerHTML;
+      var printContents = document.getElementById('printDiv').innerHTML;
+      var originalContents = document.body.innerHTML;
 
-    // Use window.print() to trigger the print dialog
-    document.body.innerHTML = printContents;
-    window.print();
-    document.body.innerHTML = originalContents;
-
-    // Add an event listener for the 'afterprint' event to restore the original content
-    window.addEventListener('afterprint', function () {
+      // Use window.print() to trigger the print dialog
+      document.body.innerHTML = printContents;
+      window.print();
       document.body.innerHTML = originalContents;
-    });
-  }
+
+      // Add an event listener for the 'afterprint' event to restore the original content
+      window.addEventListener('afterprint', function () {
+        document.body.innerHTML = originalContents;
+      });
+    }
    
   
 </script>

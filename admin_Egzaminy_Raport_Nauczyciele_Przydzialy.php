@@ -9,7 +9,8 @@
     require "connect.php"; 
 
     // Lista nauczycieli 
-    $sql = "SELECT `ID`,`Nazwisko`,`Imie` FROM `Nauczyciele` ORDER BY `Nazwisko`, `Imie`;";
+    $sql = "SELECT Nauczyciele.`ID`, Nauczyciele.`Nazwisko`, Nauczyciele.`Imie` FROM `Nauczyciele` INNER JOIN egzaminy__Komisje ON Nauczyciele.ID = egzaminy__Komisje.idNauczyciela WHERE egzaminy__Komisje.rok = ". $_SESSION['egzaminy-rok']." ORDER BY `Nazwisko`, `Imie`;";
+
     $result = $conn->query($sql);
     $tab_nauczyciele = array(); 
     if ($result->num_rows > 0) {
@@ -30,7 +31,7 @@
 </style>
 
 <div class="container" style="max-width: 1000px">        
-<h2 class="text-center my-5">Lista nauczycieli i komisji egzaminacyjnej</h2>
+<h2 class="text-center my-5">Lista nauczycieli i komisji egzaminacyjnej <?php echo $_SESSION['egzaminy-rok'] ?></h2>
         <div id="TableTeacherBody" style="max-height: calc(100vh - 355px); overflow: auto;">      
             <?php 
             $i = 1;
@@ -41,7 +42,7 @@
                     INNER JOIN Nauczyciele ON egzaminy__Komisje.idNauczyciela=Nauczyciele.ID 
                     INNER JOIN egzaminy__Terminy ON egzaminy__EgzaminyUstalone.przedmiot=egzaminy__Terminy.przedmiot 
                     INNER JOIN egzaminy__Role ON egzaminy__Komisje.rola=egzaminy__Role.id 
-                    WHERE egzaminy__Komisje.idNauczyciela=" . $nauczyciel['ID'] ." ORDER BY data";
+                    WHERE egzaminy__Komisje.idNauczyciela=" . $nauczyciel['ID'] ." AND egzaminy__Komisje.rok=".$_SESSION['egzaminy-rok']. " ORDER BY data";
                 $result = $conn->query($sql);  
                 if ($result->num_rows > 0) {
                     while( $row = $result->fetch_assoc()){

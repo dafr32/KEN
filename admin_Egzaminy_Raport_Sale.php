@@ -10,6 +10,8 @@
 
     if (session_status() === PHP_SESSION_NONE) { session_start(); }  
     require "connect.php"; 
+
+    $rok = $_SESSION['egzaminy-rok'];
 ?>
 
 <style>
@@ -20,7 +22,7 @@
     <?php
     $sqlLista = "SELECT * FROM `egzaminy__EgzaminyUstalone` 
                 INNER JOIN egzaminy__Terminy ON egzaminy__EgzaminyUstalone.przedmiot = egzaminy__Terminy.przedmiot 
-                WHERE sala != 'NULL'
+                WHERE sala != 'NULL' AND egzaminy__Terminy.rok = ". $_SESSION['egzaminy-rok']."
                 ORDER BY data , `sala` ASC";
     // echo $sqlLista;
     $resultLista = $conn->query($sqlLista);        
@@ -50,7 +52,7 @@
                 $sqlU = "SELECT eu.`Nazwisko`,  eu.`Imiona`, eu.`Kod zdającego` as kod,  eu.`Nr sali` as sala
                         FROM `egzaminy__EgzaminyUstalone` ee
                         JOIN `egzaminy__Uczniowie` eu ON REPLACE(REPLACE(eu.`Egzamin`, '(M)', ''), '(E)', '') = ee.`przedmiot`
-                        WHERE ee.`przedmiot` = '$przedmiot' AND TRIM(eu.`Nr sali`) = '$sala' GROUP BY eu.`Kod zdającego`; ";
+                        WHERE ee.`przedmiot` = '$przedmiot' AND ee.rok = $rok AND TRIM(eu.`Nr sali`) = '$sala' GROUP BY eu.`Kod zdającego`; ";
                 // echo $sqlU;
                 $resultU = $conn->query($sqlU);        
                 if ($resultU->num_rows > 0) { ?>
